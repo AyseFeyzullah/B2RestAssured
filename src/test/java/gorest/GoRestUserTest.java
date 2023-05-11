@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import java.util.Random;
 
-import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
@@ -27,7 +26,6 @@ public class GoRestUserTest {
         reqSpec = new RequestSpecBuilder()
                 .setBaseUri("https://gorest.co.in")
                 .addHeader("Authorization", "Bearer 935e64ef3f48d1b4d2967f9cf4890885fd3a7cd7c3105d1aa541572da7c32903")
-                .setContentType(ContentType.JSON)
                 .build();
 
         resSpec = new ResponseSpecBuilder()
@@ -53,13 +51,14 @@ public class GoRestUserTest {
 
     int id;
 
-    @Test(testName = "createUser")
+    @Test
     public void test1_createUser(){
         String json = getJsonData();
 
         // gelen json'i response icine kaydettik
         Response response = given()
                 .spec(reqSpec)
+                .contentType(ContentType.JSON)
                 .body(json)
                 .when()
                 .post("/public/v2/users")
@@ -68,7 +67,7 @@ public class GoRestUserTest {
                 .spec(resSpec)
                 .extract().response();
 
-        // Resopnse mükerrer defa kullanilabilir
+        // Response mükerrer defa kullanilabilir
         id = response.jsonPath().getInt("id");
         String name = response.jsonPath().get("name");
         String email = response.jsonPath().get("email");
@@ -99,8 +98,33 @@ public class GoRestUserTest {
         -XPATCH "https://gorest.co.in/public/v2/users/949"
         -d '{"name":"Allasani Peddana", "email":"allasani.peddana@15ce.com", "status":"active"}'
      */
-    @Test(dependsOnMethods = {"createUser"})
+    @Test(dependsOnMethods = {"test1_createUser"})
     public void test2_updateUser(){
+        //System.out.println(id);
+        Response response = given()
+                .spec(reqSpec)
+                .contentType(ContentType.JSON)
+                .body(getJsonData())
+                .when()
+                .put("/public/v2/users/" + id)
+                .then()
+                .log().body()
+                .spec(resSpec)
+                .extract().response();
+
+        System.out.println(response.jsonPath().get("name").toString());
+    }
+
+    @Test(dependsOnMethods = {"test1_createUser"}, priority = 1)
+    public void test3_deleteUser(){
+        given()
+                .spec(reqSpec)
+                .when()
+                .delete("/public/v2/users/" + id)
+                .then()
+                .log().body()
+                .statusCode(oneOf(200, 201, 204))
+        ;
 
     }
 
