@@ -1,0 +1,76 @@
+
+{
+  "id" : 1,
+  "users": [
+    {
+      "id": 1556518,
+      "name": "Gauraang Ahuja",
+      "email": "ahuja_gauraang@padberg.test",
+      "gender": "female",
+      "status": "inactive"
+    },
+    {
+      "id": 1556515,
+      "name": "Prof. Bela Johar",
+      "email": "prof_johar_bela@koelpin.test",
+      "gender": "female",
+      "status": "inactive"
+    },
+    {
+      "id": 1556514,
+      "name": "Deepankar Patel III",
+      "email": "patel_deepankar_iii@lubowitz.example",
+      "gender": "male",
+      "status": "active"
+    },
+    {
+      "id": 1556513,
+      "name": "Gopee Bhattacharya",
+      "email": "bhattacharya_gopee@nitzsche.test",
+      "gender": "male",
+      "status": "active"
+    },
+    {
+      "id": 1556511,
+      "name": "Mandakini Butt II",
+      "email": "ii_butt_mandakini@bednar.test",
+      "gender": "male",
+      "status": "active"
+    },
+    {
+      "id": 1556509,
+      "name": "Bakula Guha",
+      "email": "guha_bakula@wintheiser-gulgowski.example",
+      "gender": "female",
+      "status": "inactive"
+    },
+    {
+      "id": 1556508,
+      "name": "Fr. Aryan Gandhi",
+      "email": "fr_aryan_gandhi@wyman-hermiston.example",
+      "gender": "female",
+      "status": "active"
+    },
+    {
+      "id": 1556507,
+      "name": "Rep. Suryakant Menon",
+      "email": "rep_menon_suryakant@considine.test",
+      "gender": "male",
+      "status": "active"
+    },
+    {
+      "id": 1556506,
+      "name": "Chinmayanand Malik DVM",
+      "email": "malik_dvm_chinmayanand@muller-wolff.example",
+      "gender": "female",
+      "status": "inactive"
+    },
+    {
+      "id": 1556504,
+      "name": "Anurag Iyer DDS",
+      "email": "iyer_dds_anurag@ohara.example",
+      "gender": "male",
+      "status": "active"
+    }
+  ]
+}
