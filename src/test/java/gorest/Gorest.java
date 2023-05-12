@@ -1,16 +1,13 @@
 package gorest;
 
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -230,6 +227,7 @@ public class Gorest {
         String response = get("https://gorest.co.in/public/v2/users/1049")
                 .asString();
 
+        // RestAssured.path.json.jsonPath.from()
         String name = from(response).get("name");
         String email = from(response).get("email");
 
