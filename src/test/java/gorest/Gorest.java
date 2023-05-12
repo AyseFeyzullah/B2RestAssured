@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.hamcrest.Matchers;
@@ -13,7 +14,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static io.restassured.path.json.JsonPath.from;
 import static org.hamcrest.Matchers.*;
 
 public class Gorest {
@@ -157,5 +160,162 @@ public class Gorest {
 
     }
 
+    @Test
+    public void getAUser(){
+        get("https://gorest.co.in/public/v2/users/1049")
+                .then()
+                .statusCode(200)
+                .log().body()
+                ;
+    }
+
+
+    @Test
+    public void getAUserInAClass(){
+        User user = get("https://gorest.co.in/public/v2/users/1049")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .extract().as(User.class)
+        ;
+
+        System.out.println(user);
+        System.out.println(user.getName());
+        System.out.println(user.getEmail());
+    }
+
+
+    /*
+        Yeni Bir class acin
+        createUser'i map ile create edin
+        id'yi alin
+        kaydedile user'i get yapip Uer class'ina map edin.
+        User nesnesinin field'larini sout ile yazdirin
+
+     */
+
+
+    @Test
+    public void getAllUserInAClass(){
+        List<User> users = get("https://gorest.co.in/public/v2/users")
+                .then()
+                .statusCode(200)
+                .log().body()
+                .extract().jsonPath().getList("", User.class)
+                ;
+
+
+        for (User user : users) {
+            System.out.println(user);
+            System.out.println("---------------");
+
+        }
+
+    }
+
+    @Test
+    public void getReponse(){
+        Response response = get("https://gorest.co.in/public/v2/users/1049")
+                .then().extract().response();
+
+        String name = response.path("name");
+        String email = response.jsonPath().getString("email");
+
+        System.out.println("name = " + name);
+        System.out.println("email = " + email);
+    }
+
+    @Test
+    public void getReponse1(){
+        String response = get("https://gorest.co.in/public/v2/users/1049")
+                .asString();
+
+        String name = from(response).get("name");
+        String email = from(response).get("email");
+
+        System.out.println("name = " + name);
+        System.out.println("email = " + email);
+
+    }
+
 
 }
+
+
+
+
+/*
+    json asagidaki gibi ise :
+
+    [
+        {
+            "id": 1588988,
+            "name": "Trilokesh Gupta",
+            "email": "trilokesh_gupta@wunsch.test",
+            "gender": "female",
+            "status": "active"
+        },
+        {
+            "id": 1588987,
+            "name": "Datta Gill",
+            "email": "datta_gill@prohaska-mosciski.test",
+            "gender": "male",
+            "status": "inactive"
+        }
+    ]
+
+    body array olarak return edilmis
+    .extract().jsonPath().getList("", User.class)
+    .extract().jsonPath().getList("$", User.class)
+
+    "", "$" : jsonBody anlamina gelir
+
+
+
+
+
+
+     json asagidaki gibi ise :
+
+    {
+        "type" : "user",
+        "users":[
+            {
+                "id": 1588988,
+                "name": "Trilokesh Gupta",
+                "email": "trilokesh_gupta@wunsch.test",
+                "gender": "female",
+                "status": "active"
+            },
+            {
+                "id": 1588987,
+                "name": "Datta Gill",
+                "email": "datta_gill@prohaska-mosciski.test",
+                "gender": "male",
+                "status": "inactive"
+            }
+        ]
+    }
+
+    body object olarak return edilmis
+    List<Users> listOfUser = given()....extract().jsonPath().getList("users", User.class)
+    Main main = given().....extract().as(Main.class)
+
+    class Main{
+        String type;
+        ArrayList<User> users;
+    }
+
+    class User{
+        int id;
+        String name;
+        String email;
+        String gender;
+        String status;
+    }
+}
+
+
+ */
+
+

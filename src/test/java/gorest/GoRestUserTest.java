@@ -10,6 +10,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static io.restassured.RestAssured.given;
@@ -53,7 +55,8 @@ public class GoRestUserTest {
 
     @Test
     public void test1_createUser(){
-        String json = getJsonData();
+        //String json = getJsonData();
+        Map<String, String> json = getMapData();
 
         // gelen json'i response icine kaydettik
         Response response = given()
@@ -148,5 +151,25 @@ public class GoRestUserTest {
                 "}";
         return json;
     }
+
+
+    public static Map<String, String> getMapData(){
+        String[] genders = {"male", "female"};
+        String[] statuses = {"active", "inactive"};
+
+        String name = RandomStringUtils.randomAlphabetic(5, 10);
+        String email = RandomStringUtils.randomAlphabetic(5, 10) + "@mail.com";
+        String gender = genders[new Random().nextInt(genders.length)];
+        String status = statuses[new Random().nextInt(statuses.length)];
+
+        Map<String, String> data = new HashMap<>();
+        data.put("name", name);
+        data.put("email", email);
+        data.put("gender", gender);
+        data.put("status", status);
+
+        return data;
+    }
+
 
 }
