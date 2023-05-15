@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
@@ -133,15 +134,40 @@ public class Zippo2 {
                 .get("/TR/06080")
                 .then()
                 .spec(responseSpecification)
-                .extract().path("places[2].'place name'")
+                //.extract().path("places[2].'place name'")
+                .extract().jsonPath().get("places[2].'place name'")
                 ;
         Assert.assertEquals(placeName, "Sokullu Mah.");
 
     }
 
+    @Test
+    public void test6_getDataExtractPlaceName1(){
+
+        Response response = given()
+                .spec(requestSpecification)
+                .when()
+                .get("/TR/06080")
+                .then()
+                .spec(responseSpecification)
+                .extract().response();
+
+        String country = response.then().extract().path("country");
+        Assert.assertEquals(country, "Turkey");
+
+        String placeName = response.then().extract().jsonPath().get("places[2].'place name'");
+        Assert.assertEquals(placeName, "Sokullu Mah.");
+
+        response.prettyPrint();
+
+    }
 
 
+    // mahalle isimlerini liste olarak extract edin
+    @Test
+    public void test7_getDataExtractPlaceNames(){
 
+    }
 
 
     public static void main(String[] args) {
