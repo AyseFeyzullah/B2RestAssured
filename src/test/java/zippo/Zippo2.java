@@ -77,7 +77,7 @@ public class Zippo2 {
 
     // places'larda tüm state'lerin Ankara oldugunu assert edin
     @Test
-    public void test2_getDataAllStatesAreAnkara(){
+    public void test3_getDataAllStatesAreAnkara(){
 
         // json'daki places'in size'i 18 dir
 
@@ -92,16 +92,19 @@ public class Zippo2 {
         ;
     }
 
-    // places'larda tüm state'lerin Ankara oldugunu assert edin
+    // TR ve 06080 yerine pathParam kullaniniz
     @Test
-    public void test2_getDataUsePathParam(){
+    public void test4_getDataUsePathParam(){
 
-        // json'daki places'in size'i 18 dir
+        String country = "TR";
+        String postCode = "06080";
 
         given()
                 .spec(requestSpecification)
+                .pathParam("ulke", country )
+                .pathParam("postaKodu", postCode)
                 .when()
-                .get("/TR/06080")
+                .get("/{ulke}/{postaKodu}")
                 .then()
                 .spec(responseSpecification)
                 .body("places.findAll{it.state == 'Ankara'}", hasSize(18))
@@ -109,7 +112,32 @@ public class Zippo2 {
         ;
     }
 
+    // country'yi extract edin ve Turkey oldugunu assert edin
+    // 3. mahallenin adini extract edin ve Sokullu Mah. oldugunu assert edin
+    @Test
+    public void test5_getDataExtractPlaceName(){
 
+        String country = given()
+                .spec(requestSpecification)
+                .when()
+                .get("/TR/06080")
+                .then()
+                .spec(responseSpecification)
+                .extract().path("country")
+        ;
+        Assert.assertEquals(country, "Turkey");
+
+        String placeName = given()
+                .spec(requestSpecification)
+                .when()
+                .get("/TR/06080")
+                .then()
+                .spec(responseSpecification)
+                .extract().path("places[2].'place name'")
+                ;
+        Assert.assertEquals(placeName, "Sokullu Mah.");
+
+    }
 
 
 
