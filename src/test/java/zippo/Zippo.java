@@ -1,5 +1,6 @@
 package zippo;
 
+import io.restassured.specification.RequestSpecification;
 import org.hamcrest.Matchers;
 import org.testng.annotations.Test;
 
@@ -7,7 +8,6 @@ import static io.restassured.RestAssured.get;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Zippo {
-
 
     @Test
     public void test1(){
