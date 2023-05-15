@@ -207,15 +207,20 @@ public class Zippo2 {
                 .when()
                 .get("/TR/06080")
                 .then()
-                .spec(responseSpecification)
+                //.spec(responseSpecification)
                 .extract().response();
 
 
         Location location = res.then().extract().as(Location.class);
+        if (location.getPlaces() != null){
+            for (Place place : location.getPlaces()) {
+                String str = location.getCountry() + "\t" +
+                        place.getState() + "\t" +
+                        place.getPlaceName();
 
-        System.out.println(location.getPostcode());
-        System.out.println(location.getPlaces().get(0).getPlaceName());
-
+                System.out.println(str);
+            }
+        }
 
     }
 
